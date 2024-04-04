@@ -54,8 +54,7 @@ func main() {
         },
     }
 
-    err := connection.Connect()
-    if err != nil {
+    if err := connection.Connect(); err != nil {
         log.Fatal(err)
     }
 }
