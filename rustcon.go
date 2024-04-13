@@ -6,30 +6,29 @@ import (
 	"fmt"
 	"net"
 	"net/url"
-	"time"
 
 	"github.com/gorilla/websocket"
 )
 
 type RconConnection struct {
-	IP                      string
-	Port                    int
-	Password                string
-	ws                      *websocket.Conn
-	OnConnected             func()
-	OnMessage               func(*GenericMessage)
-	OnChatMessage           func(*ChatMessage)
-	OnDisconnected          func()
+	IP             string
+	Port           int
+	Password       string
+	ws             *websocket.Conn
+	OnConnected    func()
+	OnMessage      func(*GenericMessage)
+	OnChatMessage  func(*ChatMessage)
+	OnDisconnected func()
 }
 
 type RconConnectionOptions struct {
-	IP                      string
-	Port                    int
-	Password                string
-	OnConnected             func()
-	OnMessage               func(*GenericMessage)
-	OnChatMessage           func(*ChatMessage)
-	OnDisconnected          func()
+	IP             string
+	Port           int
+	Password       string
+	OnConnected    func()
+	OnMessage      func(*GenericMessage)
+	OnChatMessage  func(*ChatMessage)
+	OnDisconnected func()
 }
 
 type GenericMessage struct {
@@ -56,13 +55,13 @@ type Command struct {
 
 func NewRconConnection(options RconConnectionOptions) *RconConnection {
 	return &RconConnection{
-		IP:                      options.IP,
-		Port:                    options.Port,
-		Password:                options.Password,
-		OnConnected:             options.OnConnected,
-		OnMessage:               options.OnMessage,
-		OnChatMessage:           options.OnChatMessage,
-		OnDisconnected:          options.OnDisconnected,
+		IP:             options.IP,
+		Port:           options.Port,
+		Password:       options.Password,
+		OnConnected:    options.OnConnected,
+		OnMessage:      options.OnMessage,
+		OnChatMessage:  options.OnChatMessage,
+		OnDisconnected: options.OnDisconnected,
 	}
 }
 
