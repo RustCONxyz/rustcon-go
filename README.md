@@ -30,18 +30,11 @@ import (
 
 func main() {
     connection := &rustcon.RconConnection{
-        IP:                      "127.0.0.1",
-        Port:                    28016,
-        Password:                "password",
+        IP:       "127.0.0.1",
+        Port:     28016,
+        Password: "password",
         OnConnected: func() {
             fmt.Println("Connected to RCON")
-
-            connection.SendCommand("say Hello World!")
-
-            go func() {
-                <-time.After(10 * time.Second)
-                connection.Disconnect()
-            }()
         },
         OnMessage: func(message *rustcon.Message) {
             fmt.Println(message.Message)
