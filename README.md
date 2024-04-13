@@ -12,7 +12,7 @@ RustCON Go is a Go library for interacting with Rust servers via WebSockets (Web
 ## Installation
 
 ```bash
-go get github.com/rustcon/rustcon-go
+go get github.com/RustCONxyz/rustcon-go
 ```
 
 ## Example Usage
@@ -25,7 +25,7 @@ import (
     "log"
     "time"
 
-    "github.com/rustcon/rustcon-go"
+    "github.com/RustCONxyz/rustcon-go"
 )
 
 func main() {
