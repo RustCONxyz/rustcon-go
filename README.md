@@ -43,8 +43,8 @@ func main() {
                 connection.Disconnect()
             }()
         },
-        OnMessage: func(genericMessage *rustcon.GenericMessage) {
-            fmt.Println(genericMessage.Message)
+        OnMessage: func(message *rustcon.Message) {
+            fmt.Println(message.Message)
         },
         OnChatMessage: func(chatMessage *rustcon.ChatMessage) {
             fmt.Println(chatMessage.Message)

@@ -16,7 +16,7 @@ type RconConnection struct {
 	Password       string
 	ws             *websocket.Conn
 	OnConnected    func()
-	OnMessage      func(*GenericMessage)
+	OnMessage      func(*Message)
 	OnChatMessage  func(*ChatMessage)
 	OnDisconnected func()
 }
@@ -26,12 +26,12 @@ type RconConnectionOptions struct {
 	Port           int
 	Password       string
 	OnConnected    func()
-	OnMessage      func(*GenericMessage)
+	OnMessage      func(*Message)
 	OnChatMessage  func(*ChatMessage)
 	OnDisconnected func()
 }
 
-type GenericMessage struct {
+type Message struct {
 	Message    string `json:"Message"`
 	Identifier int    `json:"Identifier"`
 	Type       string `json:"Type"`
@@ -143,16 +143,16 @@ func (r *RconConnection) readPump() {
 }
 
 func (r *RconConnection) handleMessage(data []byte) {
-	genericMessage := GenericMessage{}
-	err := json.Unmarshal(data, &genericMessage)
+	Message := Message{}
+	err := json.Unmarshal(data, &Message)
 	if err != nil {
 		fmt.Println("Error unmarshalling message:", err)
 		return
 	}
 
-	if genericMessage.Type == "Chat" && r.OnChatMessage != nil {
+	if Message.Type == "Chat" && r.OnChatMessage != nil {
 		chatMessage := ChatMessage{}
-		err := json.Unmarshal([]byte(genericMessage.Message), &chatMessage)
+		err := json.Unmarshal([]byte(Message.Message), &chatMessage)
 		if err != nil {
 			fmt.Println("Error unmarshalling chat message:", err)
 			return
@@ -163,6 +163,6 @@ func (r *RconConnection) handleMessage(data []byte) {
 	}
 
 	if r.OnMessage != nil {
-		r.OnMessage(&genericMessage)
+		r.OnMessage(&Message)
 	}
 }
