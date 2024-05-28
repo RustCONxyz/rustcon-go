@@ -53,8 +53,18 @@ type Command struct {
 	Name       string `json:"Name"`
 }
 
-func NewRconConnection(options RconConnectionOptions) *RconConnection {
-	return &RconConnection{
+func NewRconConnection(options RconConnectionOptions) (*RconConnection, error) {
+	if options.IP == "" || net.ParseIP(options.IP) == nil {
+		return nil, errors.New("invalid IP address")
+	}
+	if options.Port < 1 || options.Port > 65535 {
+		return nil, errors.New("invalid port number")
+	}
+	if options.Password == "" {
+		return nil, errors.New("password cannot be empty")
+	}
+
+	conn := &RconConnection{
 		IP:             options.IP,
 		Port:           options.Port,
 		Password:       options.Password,
@@ -63,15 +73,19 @@ func NewRconConnection(options RconConnectionOptions) *RconConnection {
 		OnChatMessage:  options.OnChatMessage,
 		OnDisconnected: options.OnDisconnected,
 	}
+
+	return conn, nil
 }
 
 func (r *RconConnection) Connect() error {
-	if net.ParseIP(r.IP) == nil {
+	if r.IP == "" || net.ParseIP(r.IP) == nil {
 		return errors.New("invalid IP address")
 	}
-
 	if r.Port < 1 || r.Port > 65535 {
 		return errors.New("invalid port number")
+	}
+	if r.Password == "" {
+		return errors.New("password cannot be empty")
 	}
 
 	u := url.URL{Scheme: "ws", Host: fmt.Sprintf("%s:%d", r.IP, r.Port), Path: fmt.Sprintf("/%s", r.Password)}
