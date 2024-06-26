@@ -50,6 +50,13 @@ func main() {
     if err := connection.Connect(); err != nil {
         log.Fatal(err)
     }
+
+    serverInfo, err := connection.SendCommand("serverinfo")
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    fmt.Println(serverInfo.Message)
 }
 ```
 
